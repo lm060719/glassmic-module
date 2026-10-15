@@ -1,0 +1,10 @@
+/build/
+/dist/
+/third_party/
+/device-evidence/
+*.log
+/.playwright-cli/
+/output/
+__pycache__/
+*.pyc
+*.lnk

@@ -1,0 +1,17 @@
+# 独立模块发版记录
+
+KernelSU 模块与原 LSPosed APK 的版本编号独立。核对时，原项目最近正式 [GitHub Release](https://github.com/lm060719/io.mo.glassmic/releases/tag/25-1.4.6) 为 1.4.6（2026-10-11）；独立模块工作目录未配置远程仓库，没有公开 Release 或标签。
+
+模块基准使用此前已交付给用户、并已安装使用的 0.1.0，证据为初版 ZIP 和测试设备上的 module.prop。后续保持 0.1.0，追加第四段修订号；内部 versionCode 单独递增。
+
+| 版本 | versionCode | 记录 |
+|---|---:|---|
+| 0.1.0 | 1 | 2026-10-13 初版交付并安装；ZIP SHA-256 为 0c9945d0dd6474dbb373c76b259e54b1020db29c92f02097e32aed7e381ca250 |
+| 0.1.0.1 | 3 | 2026-10-14 本地/隔离测试构建，未作为此次最终更新交付；该修订号已占用 |
+| 0.1.0.2 | 4 | 本地构建包；安装前校验发现 Windows CRLF 换行，未安装；该修订号已占用 |
+| 0.1.0.3 | 5 | 已安装并按用户许可重启；播放时钟、FLAC 文件选择、直接导入、SELinux 权限修复生效，微信 AAudio/OpenSL 初始化通过 |
+| 0.1.0.4 | 6 | 已安装并按用户许可重启；补齐 Android 17 AudioRecord 字段改名兼容；用户取消旧版 LSPosed GlassMic 后，微信录音恢复且新版实际取音计数增长 |
+| 0.1.0.5 | 7 | 2026-10-15 本地构建包，未安装；去掉录音后端 `thread_local`（emutls 在回调线程首次访问时分配内存并加锁），改用固定读取池，构建时检查 TLS。ZIP SHA-256 为 b4520ad75cd734b8d6d796494cdeed8f2d65e627edb68e6105b5403795e891ec；root 实机复验待完成，验证情况见[验证记录](validation.md) |
+| 0.1.0.6 | 8 | 2026-10-15 已安装到 25019PNF3C，并按用户许可重启生效；已安装文件哈希与构建一致，微信 hook mask 15、stage 3；在 0.1.0.5 基础上附带 ShadowHook 的 `libshadowhook_nothing.so`，并在 Zygote 的 preAppSpecialize 阶段按描述符加载、初始化 ShadowHook，hook 不再依赖 ROM 自带该库。ZIP SHA-256 为 7fd149ec4eb3518fa4d9776b3686b5a9027ff0840a6134a1b68f17fed6237da2；Mi 9T 和主测试机 25019PNF3C 的 root 隔离测试全部通过 |
+
+早期临时生成的 0.1.1 不作为发版基准。后续修复从 0.1.0.7 继续，另有明确指定的新正式基准时再调整。

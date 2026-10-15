@@ -1,0 +1,7 @@
+# Only the module's PCM/statistics inodes receive this type. Their parent
+# directories remain root-only, and the master PCM descriptor is read-only.
+type glassmic_shm file_type
+allow ksu glassmic_shm file { create open read write getattr setattr relabelfrom relabelto map unlink link }
+allow zygote glassmic_shm file { read write getattr map }
+allow appdomain glassmic_shm file { read write getattr map }
+allow zygote ksu fd use

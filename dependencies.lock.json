@@ -1,0 +1,12 @@
+{
+  "zygisk_commit": "7bb941ac8edfcffd1d23761e401c45ca95409dc1",
+  "miniaudio_tag": "0.11.23",
+  "shadowhook_tag": "v2.0.1",
+  "sha256": {
+    "zygisk.hpp": "fc6523882c0f8659b4fcd1e04ffb07d3a948090e5a8c08817af6e2b506a078d0",
+    "miniaudio.h": "7e4f3f13c8fe66df2080ac3dd12a89193e3c2463cb7f067c798abd7331cd8ee6",
+    "shadowhook.tar.gz": "77b954483cee4eead5f2ab4571b19d00c5bfa6db1b656e62a3dc7c136a14aedb",
+    "kernelsu.tgz": "5ed38352a2d1efb93936e8d34168739674a9317e4cd4b41e4ccad8d6905b7af8"
+  },
+  "kernelsu_js": "3.0.2"
+}

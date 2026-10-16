@@ -11,53 +11,53 @@
 </head>
 <body>
 <div class="shell">
-<header><div class="brand"><span class="brand-mark" aria-hidden="true">◉</span><div><h1>璃麦<span>GlassMic</span></h1><p>让声音自由流动</p></div></div><span id="connection" class="badge">正在连接</span></header>
+<header><div class="brand"><span class="brand-mark" aria-hidden="true">◉</span><div><h1><span data-i18n="brand">璃麦</span><span class="brand-latin">GlassMic</span></h1><p data-i18n="tagline">让声音自由流动</p></div></div><div class="header-actions"><span id="connection" class="badge" data-i18n="connecting">正在连接</span><button id="language-toggle" class="language-toggle" lang="en" aria-label="切换到英文" data-i18n-attr="aria-label:switchLanguage">EN</button></div></header>
 <div id="message" class="message" role="status" hidden></div>
 <main>
-<section class="player card" aria-label="播放控制">
-<div class="eyebrow"><span id="source-mode">真实麦克风</span><span id="activity">等待录音</span></div>
-<h2 id="track-name">选择一段声音</h2><p id="track-description" class="muted">从音频库选择文件，或生成一段语音</p>
-<div class="level" aria-label="输出电平"><div id="level-fill"></div></div>
-<label class="sr-only" for="seek">播放进度</label><input id="seek" class="seek" type="range" min="0" max="1" value="0" disabled>
+<section class="player card" aria-label="播放控制" data-i18n-attr="aria-label:playerRegion">
+<div class="eyebrow"><span id="source-mode" data-i18n="modeReal">真实麦克风</span><span id="activity" data-i18n="waitingRecord">等待录音</span></div>
+<h2 id="track-name" data-i18n="pickSound">选择一段声音</h2><p id="track-description" class="muted" data-i18n="pickSoundHint">从音频库选择文件，或生成一段语音</p>
+<div class="level" aria-label="输出电平" data-i18n-attr="aria-label:outputLevel"><div id="level-fill"></div></div>
+<label class="sr-only" for="seek" data-i18n="seekLabel">播放进度</label><input id="seek" class="seek" type="range" min="0" max="1" value="0" disabled>
 <div class="time-row"><span id="position">00:00</span><span id="duration">00:00</span></div>
-<div class="transport"><button id="real" class="icon-button" aria-label="切回真实麦克风">麦克风</button><button id="play" class="play-button" disabled aria-label="播放">播放</button><button id="silence" class="icon-button" aria-label="静音录音输入">静音</button></div>
-<div class="player-footer"><label class="switch-label"><input type="checkbox" id="loop"><span>循环播放</span></label><span class="hint">关闭页面后继续供音</span></div>
+<div class="transport"><button id="real" class="icon-button" aria-label="切回真实麦克风" data-i18n="real" data-i18n-attr="aria-label:realAria">麦克风</button><button id="play" class="play-button" disabled aria-label="播放" data-i18n="play">播放</button><button id="silence" class="icon-button" aria-label="静音录音输入" data-i18n="silence" data-i18n-attr="aria-label:silenceAria">静音</button></div>
+<div class="player-footer"><label class="switch-label"><input type="checkbox" id="loop"><span data-i18n="loop">循环播放</span></label><span class="hint" data-i18n="keepsPlaying">关闭页面后继续供音</span></div>
 </section>
-<nav class="tabs" aria-label="功能"><button data-tab="library" class="active" aria-selected="true">音频库</button><button data-tab="speech" aria-selected="false">文字转语音</button><button data-tab="settings" aria-selected="false">设置</button></nav>
+<nav class="tabs" aria-label="功能" data-i18n-attr="aria-label:tabsAria"><button data-tab="library" class="active" aria-selected="true" data-i18n="tabLibrary">音频库</button><button data-tab="speech" aria-selected="false" data-i18n="tabSpeech">文字转语音</button><button data-tab="settings" aria-selected="false" data-i18n="tabSettings">设置</button></nav>
 <section id="library" class="tab-panel">
-<div class="section-heading"><div><h2>我的音频</h2><p class="muted">WAV、MP3、FLAC · 每个文件最多 512 MB</p></div><button id="import" class="accent-button">导入音频</button></div>
+<div class="section-heading"><div><h2 data-i18n="myAudio">我的音频</h2><p class="muted" data-i18n="formats">WAV、MP3、FLAC · 每个文件最多 512 MB</p></div><button id="import" class="accent-button" data-i18n="importAudio">导入音频</button></div>
 <input id="file-input" type="file" multiple hidden>
-<div id="upload-progress" class="upload card" hidden><span id="upload-label">正在导入…</span><progress max="100" value="0"></progress></div>
+<div id="upload-progress" class="upload card" hidden><span id="upload-label" data-i18n="importing">正在导入…</span><progress max="100" value="0"></progress></div>
 <div id="files" class="file-list"><div class="skeleton card"></div><div class="skeleton card"></div></div>
 </section>
 <section id="speech" class="tab-panel" hidden>
-<div class="section-heading"><div><h2>把文字变成声音</h2><p class="muted">使用手机已配置的系统语音引擎</p></div></div>
-<div class="card form-card"><label for="speech-text">想说些什么？</label><textarea id="speech-text" rows="5" maxlength="4000" placeholder="输入文字，生成后会保存到音频库"></textarea>
-<div class="form-row"><label>语言<select id="language"><option value="zh-CN">普通话</option><option value="en-US">English</option><option value="zh-TW">中文（台湾）</option></select></label><label>语速<select id="speech-rate"><option value="0.8">慢一些</option><option value="1" selected>标准</option><option value="1.2">快一些</option></select></label></div>
-<button id="synthesize" class="accent-button wide">生成语音</button><p class="muted hint">生成时请保持页面打开。生成完成后，播放由独立服务负责。</p></div>
+<div class="section-heading"><div><h2 data-i18n="speechTitle">把文字变成声音</h2><p class="muted" data-i18n="speechEngine">使用手机已配置的系统语音引擎</p></div></div>
+<div class="card form-card"><label for="speech-text" data-i18n="speechPrompt">想说些什么？</label><textarea id="speech-text" rows="5" maxlength="4000" placeholder="输入文字，生成后会保存到音频库" data-i18n-attr="placeholder:speechPlaceholder"></textarea>
+<div class="form-row"><label><span data-i18n="language">语言</span><select id="language"><option value="zh-CN" data-i18n="langZhCN">普通话</option><option value="en-US" data-i18n="langEnUS">English</option><option value="zh-TW" data-i18n="langZhTW">中文（台湾）</option></select></label><label><span data-i18n="rate">语速</span><select id="speech-rate"><option value="0.8" data-i18n="rateSlow">慢一些</option><option value="1" selected data-i18n="rateNormal">标准</option><option value="1.2" data-i18n="rateFast">快一些</option></select></label></div>
+<button id="synthesize" class="accent-button wide" data-i18n="synthesize">生成语音</button><p class="muted hint" data-i18n="synthHint">生成时请保持页面打开。生成完成后，播放由独立服务负责。</p></div>
 </section>
 <section id="settings" class="tab-panel" hidden>
-<div class="section-heading"><div><h2>声音设置</h2><p class="muted">设置保存在模块中</p></div></div>
+<div class="section-heading"><div><h2 data-i18n="soundSettings">声音设置</h2><p class="muted" data-i18n="settingsStored">设置保存在模块中</p></div></div>
 <div class="card form-card">
-<label for="gain">输出增益 <output id="gain-value">0 dB</output></label><input type="range" id="gain" min="-24" max="12" step="1" value="0">
-<label for="speed">播放速度 <output id="speed-value">1.00×</output></label><input type="range" id="speed" min="0.5" max="2" step="0.05" value="1"><p class="muted hint">速度与音调联动；内置软限幅保护输出。</p>
+<label for="gain"><span data-i18n="gain">输出增益</span> <output id="gain-value">0 dB</output></label><input type="range" id="gain" min="-24" max="12" step="1" value="0">
+<label for="speed"><span data-i18n="speed">播放速度</span> <output id="speed-value">1.00×</output></label><input type="range" id="speed" min="0.5" max="2" step="0.05" value="1"><p class="muted hint" data-i18n="speedHint">速度与音调联动；内置软限幅保护输出。</p>
 </div>
-<div class="section-heading"><div><h2>生效应用</h2><p class="muted">仅选中的应用使用虚拟麦克风</p></div><button id="save-targets" class="accent-button">保存</button></div>
-<div class="card form-card"><label for="app-search">查找应用</label><input type="search" id="app-search" placeholder="搜索应用包名"><div id="apps" class="app-list"><p class="muted">正在读取应用列表…</p></div><details><summary>手动编辑包名</summary><textarea id="target-packages" rows="4" placeholder="每行一个包名"></textarea></details><p class="hint muted">首次选择的应用，需要在它下次启动时加载后端。移除应用会立即停止替换其录音。</p></div>
-<details class="card diagnostics"><summary>运行诊断</summary><div id="diagnostics" class="muted">暂无数据</div></details>
+<div class="section-heading"><div><h2 data-i18n="targetApps">生效应用</h2><p class="muted" data-i18n="targetAppsHint">仅选中的应用使用虚拟麦克风</p></div><button id="save-targets" class="accent-button" data-i18n="save">保存</button></div>
+<div class="card form-card"><label for="app-search" data-i18n="findApp">查找应用</label><input type="search" id="app-search" placeholder="搜索应用包名" data-i18n-attr="placeholder:appSearchPlaceholder"><div id="apps" class="app-list"><p class="muted" data-i18n="loadingApps">正在读取应用列表…</p></div><details><summary data-i18n="editManually">手动编辑包名</summary><textarea id="target-packages" rows="4" placeholder="每行一个包名" data-i18n-attr="placeholder:packagesPlaceholder"></textarea></details><p class="hint muted" data-i18n="targetNote">首次选择的应用，需要在它下次启动时加载后端。移除应用会立即停止替换其录音。</p></div>
+<details class="card diagnostics"><summary data-i18n="diagnostics">运行诊断</summary><div id="diagnostics" class="muted" data-i18n="noData">暂无数据</div></details>
 </section>
 </main>
-<footer>璃麦 · KernelSU 音频模块 <span>v0.1.0.6</span></footer>
+<footer><span data-i18n="footer">璃麦 · KernelSU 音频模块</span> <span>v0.1.0.7</span></footer>
 </div>
 <dialog id="file-browser" aria-labelledby="browser-title">
-<div class="browser-heading"><h2 id="browser-title">从手机导入音频</h2><button id="browser-close" aria-label="关闭文件选择">关闭</button></div>
-<p class="muted">直接复制手机文件，支持 WAV、MP3、FLAC。原始文件会保留。</p>
-<div class="browser-shortcuts"><button data-folder="/sdcard/Download">下载</button><button data-folder="/sdcard/Music">音乐</button><button data-folder="/sdcard">内部存储</button></div>
-<div class="browser-location"><button id="browser-up">上一级</button><span id="browser-path" class="muted"></span></div>
-<label class="sr-only" for="browser-search">筛选文件</label><input type="search" id="browser-search" placeholder="筛选当前文件夹">
+<div class="browser-heading"><h2 id="browser-title" data-i18n="browserTitle">从手机导入音频</h2><button id="browser-close" aria-label="关闭文件选择" data-i18n="close" data-i18n-attr="aria-label:closeBrowserAria">关闭</button></div>
+<p class="muted" data-i18n="browserIntro">直接复制手机文件，支持 WAV、MP3、FLAC。原始文件会保留。</p>
+<div class="browser-shortcuts"><button data-folder="/sdcard/Download" data-i18n="folderDownload">下载</button><button data-folder="/sdcard/Music" data-i18n="folderMusic">音乐</button><button data-folder="/sdcard" data-i18n="folderInternal">内部存储</button></div>
+<div class="browser-location"><button id="browser-up" data-i18n="up">上一级</button><span id="browser-path" class="muted"></span></div>
+<label class="sr-only" for="browser-search" data-i18n="filterFiles">筛选文件</label><input type="search" id="browser-search" placeholder="筛选当前文件夹" data-i18n-attr="placeholder:filterPlaceholder">
 <p id="browser-status" class="muted" role="status"></p><div id="browser-entries" class="browser-entries"></div>
-<div class="browser-footer"><button id="system-import">系统文件选择器</button><button id="browser-import" class="accent-button" disabled>导入所选音频</button></div>
-<p class="hint muted">云盘等位置请使用系统文件选择器，传输速度会较慢。</p>
+<div class="browser-footer"><button id="system-import" data-i18n="systemPicker">系统文件选择器</button><button id="browser-import" class="accent-button" disabled data-i18n="importSelected">导入所选音频</button></div>
+<p class="hint muted" data-i18n="cloudHint">云盘等位置请使用系统文件选择器，传输速度会较慢。</p>
 </dialog>
 <script type="module" src="app.js"></script>
 </body></html>

@@ -1,7 +1,7 @@
 async (page) => {
   await page.addInitScript(() => {
     window.__gmCommands=[];
-    const state={ok:true,version:'0.1.0.6',mode:0,paused:true,loop:false,gainDb:0,speed:1,positionMs:0,durationMs:45000,peak:0.34,selected:'',
+    const state={ok:true,version:'0.1.0.7',mode:0,paused:true,loop:false,gainDb:0,speed:1,positionMs:0,durationMs:45000,peak:0.34,selected:'',
       targets:['io.mo.glassmic.probe'],clients:[{package:'io.mo.glassmic.probe',pid:12345,hooks:15,reads:2048,frames:960000,missing:0,skipped:0}],
       files:[{name:'清晨的声音.wav',bytes:4320000},{name:"朋友的'问候.mp3",bytes:640000}]};
     window.__gmState=state;

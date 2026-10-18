@@ -1,7 +1,7 @@
 async (page) => {
   await page.addInitScript(() => {
     window.__gmCommands=[];
-    const state={ok:true,version:'0.1.0.8',mode:0,paused:true,loop:false,gainDb:0,speed:1,positionMs:0,durationMs:45000,peak:0.34,selected:'',
+    const state={ok:true,version:'0.1.0.9',mode:0,paused:true,loop:false,gainDb:0,speed:1,positionMs:0,durationMs:45000,peak:0.34,selected:'',
       targets:['io.mo.glassmic.probe'],clients:[{package:'io.mo.glassmic.probe',pid:12345,hooks:15,reads:2048,frames:960000,missing:0,skipped:0}],
       files:[{name:'清晨的声音.wav',bytes:4320000},{name:"朋友的'问候.mp3",bytes:640000}]};
     window.__gmState=state;
@@ -20,7 +20,10 @@ async (page) => {
         else{word+=c;started=true;}}
       if(started)out.push(word);return out;
     }
-    window.ksu={exec(command,options,callback) {
+    // Like the KernelSU manager: labels for apps it has loaded, an error entry otherwise.
+    const appLabels={'io.mo.glassmic.probe':'璃麦测试探针','com.example.recorder':'录音机','com.example.chat':'Chat'};
+    window.ksu={getPackagesInfo(json){return JSON.stringify(JSON.parse(json).map(p=>appLabels[p]?{packageName:p,appLabel:appLabels[p]}:{packageName:p,error:'Package not found or inaccessible'}));},
+    exec(command,options,callback) {
       const now=performance.now();
       if(state.mode===1&&!state.paused){state.positionMs+=(now-clock)*state.speed;
         if(state.loop)state.positionMs%=state.durationMs;
@@ -28,7 +31,7 @@ async (page) => {
       clock=now;
       window.__gmCommands.push(command);
       let stdout='',errno=0;
-      if(command==='pm list packages -3')stdout='package:io.mo.glassmic.probe\npackage:com.example.recorder\npackage:com.example.chat\n';
+      if(command==='pm list packages -3')stdout='package:io.mo.glassmic.probe\npackage:com.example.recorder\npackage:com.example.chat\npackage:org.example.nolabel\n';
       else {
         const args=words(command),cmd=args[1];
         if(args[0].endsWith('media-card.sh')) {

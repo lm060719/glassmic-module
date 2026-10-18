@@ -1,4 +1,10 @@
 # 验证记录
+## 0.1.0.9 生效应用显示应用名 · 2026-10-18（Asia/Shanghai，未安装）
+- 构建：`scripts/build.ps1` 两次结果一致，16 KiB 对齐检查通过。
+- 接口：测试机上的 KernelSU 管理器 v3.3.1（32680）的 DEX 中有 `getPackagesInfo`/`listPackages`。上游源码显示，管理器打开模块 WebUI 前会加载应用列表（`WebViewHelper.kt`），`getPackagesInfo` 从中返回 `appLabel`；未收录的包返回 error，页面改为显示包名。
+- WebUI：PC 浏览器模拟桥接，应用名与包名副标题显示正确；无应用名的包回退为包名；已勾选的应用排在前面；勾选后列表不立即跳动，保存后重新排序；按应用名搜索可用。
+- 未验证：手机 KernelSU 管理器内的实际显示。
+
 ## 0.1.0.8 控制中心卡片 · 2026-10-18（Asia/Shanghai，未安装）
 - 构建：`scripts/build.ps1` 通过；新增的 16 KiB 检查确认 5 个 ELF（glassmicd、glassmicctl、Zygisk 加载器、后端、`libshadowhook_nothing.so`）的 LOAD 对齐均为 0x4000。两次构建 ZIP 一致。
 - WebUI：PC 浏览器模拟 KernelSU 桥接，开关在中文/英文下开启、关闭，调用 `media-card.sh status/on/off`，状态与提示文字正确。

@@ -1,4 +1,4 @@
-import { exec } from './vendor/index.js';
+import { exec, getPackagesInfo } from './vendor/index.js';
 import { t, say, sayRaw, translateError, applyTranslations, setLanguage, currentLanguage } from './i18n.js';
 const MODULE='/data/adb/modules/glassmic';
 const CTL=MODULE+'/bin/glassmicctl';
@@ -7,6 +7,8 @@ const $=id=>document.getElementById(id);
 const quote=value=>"'"+String(value).replaceAll("'","'\\''")+"'";
 let state=null, busy=false, refreshing=false, connected=false, apps=[], chosen=new Set(), targetsDirty=false, seeking=false;
 let filesKey='', targetsKey='', messageTimer;
+// App names from the KernelSU manager; packages it does not know keep showing their package name.
+const labels=new Map(), labelLookups=new Set();
 let positionAnchor=0, lastProgressPaint=0, browser=null, browserLoading=false;
 let actionRevision=0;
 const importChoices=new Map();
@@ -99,14 +101,28 @@ function renderFiles(files,selected) {
     row.append(info,select,remove);container.append(row);
   }
 }
+function lookUpLabels(packages) {
+  const missing=packages.filter(p=>!labelLookups.has(p));if(!missing.length)return;
+  missing.forEach(p=>labelLookups.add(p));
+  // Older managers lack getPackagesInfo; the wrapper then returns [] and package names stay.
+  for(const info of getPackagesInfo(missing))if(info?.appLabel&&!info.error)labels.set(info.packageName,String(info.appLabel));
+}
+const appName=pkg=>labels.get(pkg)||pkg;
 function renderApps() {
   const term=$('app-search').value.trim().toLowerCase();const list=$('apps');list.replaceChildren();
-  const packages=[...new Set([...apps,...chosen])].sort().filter(p=>p.toLowerCase().includes(term));
+  const all=[...new Set([...apps,...chosen])];lookUpLabels(all);
+  const collator=new Intl.Collator(document.documentElement.lang);
+  // Checked apps first. A box ticked now moves on the next redraw (search, save), not under the finger.
+  const packages=all.filter(p=>p.toLowerCase().includes(term)||appName(p).toLowerCase().includes(term))
+    .sort((a,b)=>(chosen.has(b)-chosen.has(a))||collator.compare(appName(a),appName(b))||a.localeCompare(b));
   for(const pkg of packages) {
     const label=document.createElement('label');label.className='app-item';
     const check=document.createElement('input');check.type='checkbox';check.checked=chosen.has(pkg);
     check.onchange=()=>{targetsDirty=true;check.checked?chosen.add(pkg):chosen.delete(pkg);$('target-packages').value=[...chosen].join('\n');};
-    const span=document.createElement('span');span.textContent=pkg;label.append(check,span);list.append(label);
+    const text=document.createElement('span');text.className='app-text';
+    const name=document.createElement('span');name.className='app-name';name.textContent=appName(pkg);text.append(name);
+    if(labels.has(pkg)){const id=document.createElement('small');id.textContent=pkg;text.append(id);}
+    label.append(check,text);list.append(label);
   }
   if(!packages.length){const p=document.createElement('p');p.className='muted';p.textContent=t('noMatchingApps');list.append(p);}
 }

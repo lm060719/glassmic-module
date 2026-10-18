@@ -40,6 +40,23 @@ try {
     $env:JAVA_HOME = $Java
     & (Join-Path $Sdk 'build-tools\35.0.0\d8.bat') --min-api 29 --lib (Join-Path $Sdk 'platforms\android-35\android.jar') --output (Join-Path $stage 'bin\glassmic-tts.jar') (Join-Path $root 'build\tts-classes.jar')
     if ($LASTEXITCODE -ne 0) { throw 'TTS dex build failed' }
+    # Control-center media card (overlay/MediaCard.java plus the shared bootstrap in overlay/Main.java).
+    $mediaClasses = Join-Path $root 'build\media\classes'
+    Remove-Item -Recurse -Force $mediaClasses -ErrorAction SilentlyContinue
+    New-Item -ItemType Directory -Path $mediaClasses -Force | Out-Null
+    & (Join-Path $Java 'bin\javac.exe') -encoding UTF-8 -source 17 -target 17 -cp (Join-Path $Sdk 'platforms\android-35\android.jar') -d $mediaClasses (Get-ChildItem (Join-Path $root 'overlay\*.java')).FullName
+    if ($LASTEXITCODE -ne 0) { throw 'Media card Java build failed' }
+    & (Join-Path $Java 'bin\jar.exe') cf (Join-Path $root 'build\media\classes.jar') -C $mediaClasses .
+    & (Join-Path $Sdk 'build-tools\35.0.0\d8.bat') --min-api 29 --lib (Join-Path $Sdk 'platforms\android-35\android.jar') --output (Join-Path $stage 'bin\glassmic-media.jar') (Join-Path $root 'build\media\classes.jar')
+    if ($LASTEXITCODE -ne 0) { throw 'Media card dex build failed' }
+    # Every packaged ELF must use 16 KiB (or larger) LOAD segment alignment.
+    foreach ($elf in 'bin\glassmicd','bin\glassmicctl','zygisk\arm64-v8a.so','lib\arm64-v8a.so','lib\nothing\arm64-v8a\libshadowhook_nothing.so') {
+        $loads = & $readelf -lW (Join-Path $stage $elf) | Select-String -Pattern '^\s*LOAD\s.*\s0x([0-9a-f]+)$'
+        if ($LASTEXITCODE -ne 0 -or -not $loads) { throw "ELF inspection failed: $elf" }
+        foreach ($load in $loads) {
+            if ([Convert]::ToInt64($load.Matches[0].Groups[1].Value, 16) -lt 16384) { throw "$elf has a LOAD segment aligned below 16 KiB:`n$load" }
+        }
+    }
     python scripts/package.py
     if ($LASTEXITCODE -ne 0) { throw 'Module packaging failed' }
 } finally { Pop-Location }

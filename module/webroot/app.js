@@ -2,6 +2,7 @@ import { exec } from './vendor/index.js';
 import { t, say, sayRaw, translateError, applyTranslations, setLanguage, currentLanguage } from './i18n.js';
 const MODULE='/data/adb/modules/glassmic';
 const CTL=MODULE+'/bin/glassmicctl';
+const MEDIA_CARD=MODULE+'/bin/media-card.sh';
 const $=id=>document.getElementById(id);
 const quote=value=>"'"+String(value).replaceAll("'","'\\''")+"'";
 let state=null, busy=false, refreshing=false, connected=false, apps=[], chosen=new Set(), targetsDirty=false, seeking=false;
@@ -194,9 +195,23 @@ async function importLocalFiles() {
   } catch(e){sayRaw($('browser-status'),e.message);throw e;}
   finally{$('upload-progress').hidden=true;progress.value=0;renderBrowser();syncBrowserControls();}
 }
+function renderMediaCard(s) {
+  $('media-card').checked=s.enabled;
+  say($('media-card-status'),!s.enabled?'mediaCardOff':s.running?'mediaCardOn':s.supervisor?'mediaCardStarting':'mediaCardReboot');
+}
+// The switch is saved by media-card.sh; the boot supervisor started by service.sh shows or removes the card.
+async function mediaCard(command='status') {
+  $('media-card').disabled=true;
+  try {const s=await shell([MEDIA_CARD,command].map(quote).join(' '));renderMediaCard(s);return s;}
+  finally {$('media-card').disabled=false;}
+}
+async function refreshMediaCard() {
+  try {await mediaCard();} catch(e){sayRaw($('media-card-status'),e.message);}
+}
 document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>{
   document.querySelectorAll('[data-tab]').forEach(b=>{const active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
   document.querySelectorAll('.tab-panel').forEach(panel=>panel.hidden=panel.id!==button.dataset.tab);
+  if(button.dataset.tab==='settings'&&typeof window.ksu!=='undefined')refreshMediaCard();
 });
 $('play').onclick=()=>action(async()=>{state=await command(state.mode===1&&!state.paused?'pause':'play');});
 $('real').onclick=()=>action(async()=>{state=await command('real');});
@@ -222,6 +237,14 @@ $('save-targets').onclick=()=>action(async()=>{
   const names=[...chosen];if(names.some(p=>!/^([a-zA-Z0-9_]+\.)+[a-zA-Z0-9_]+$/.test(p)))throw new Error(t('invalidPackage'));
   state=await command('targets',...names);targetsDirty=false;notify('targetsSaved',false,null);
 });
+$('media-card').onchange=()=>{
+  const on=$('media-card').checked;
+  if(busy){$('media-card').checked=!on;return;}
+  action(async()=>{
+    try {await mediaCard(on?'on':'off');notify(on?'mediaCardShown':'mediaCardHidden',false,null);}
+    catch(e){await refreshMediaCard();throw e;}
+  });
+};
 $('synthesize').onclick=()=>action(async()=>{
   const text=$('speech-text').value.trim();if(!text)throw new Error(t('enterText'));
   say($('synthesize'),'synthesizing');
@@ -246,7 +269,7 @@ if(typeof window.ksu==='undefined') {
   $('files').replaceChildren();notify('ksuOnly',true,null);
   document.querySelectorAll('button,input,textarea,select').forEach(element=>element.disabled=element.id!=='language-toggle');
 } else {
-  refresh();
+  refresh();refreshMediaCard();
   setInterval(()=>paintProgress(performance.now()),100);
   exec('pm list packages -3').then(result=>{
     apps=result.stdout.split('\n').filter(line=>line.startsWith('package:')).map(line=>line.slice(8).trim());renderApps();

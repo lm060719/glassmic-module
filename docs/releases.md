@@ -1,6 +1,6 @@
 # 独立模块发版记录
 
-KernelSU 模块与原 LSPosed APK 的版本编号独立。核对时，原项目最近正式 [GitHub Release](https://github.com/lm060719/io.mo.glassmic/releases/tag/25-1.4.6) 为 1.4.6（2026-10-11）；独立模块工作目录未配置远程仓库，没有公开 Release 或标签。
+KernelSU 模块与原 LSPosed APK 的版本编号独立。核对时，原项目最近正式 [GitHub Release](https://github.com/lm060719/io.mo.glassmic/releases/tag/25-1.4.6) 为 1.4.6（2026-10-11）。独立模块后来配置了远程仓库 `lm060719/glassmic-module`，2026-10-18 核对时远程没有标签，也没有 Release；本地同样没有标签。
 
 模块基准使用此前已交付给用户、并已安装使用的 0.1.0，证据为初版 ZIP 和测试设备上的 module.prop。后续保持 0.1.0，追加第四段修订号；内部 versionCode 单独递增。
 
@@ -14,5 +14,6 @@ KernelSU 模块与原 LSPosed APK 的版本编号独立。核对时，原项目�
 | 0.1.0.5 | 7 | 2026-10-15 本地构建包，未安装；去掉录音后端 `thread_local`（emutls 在回调线程首次访问时分配内存并加锁），改用固定读取池，构建时检查 TLS。ZIP SHA-256 为 b4520ad75cd734b8d6d796494cdeed8f2d65e627edb68e6105b5403795e891ec；root 实机复验待完成，验证情况见[验证记录](validation.md) |
 | 0.1.0.6 | 8 | 2026-10-15 已安装到 25019PNF3C，并按用户许可重启生效；已安装文件哈希与构建一致，微信 hook mask 15、stage 3；在 0.1.0.5 基础上附带 ShadowHook 的 `libshadowhook_nothing.so`，并在 Zygote 的 preAppSpecialize 阶段按描述符加载、初始化 ShadowHook，hook 不再依赖 ROM 自带该库。ZIP SHA-256 为 7fd149ec4eb3518fa4d9776b3686b5a9027ff0840a6134a1b68f17fed6237da2；Mi 9T 和主测试机 25019PNF3C 的 root 隔离测试全部通过 |
 | 0.1.0.7 | 9 | 2026-10-16 本地构建包，未安装；WebUI 增加中英文切换（右上角按钮，选择保存在 WebView 本地存储，首次按系统语言），界面、诊断信息和原生/TTS 返回的已知错误均有英文；模块描述改为中英双语。原生仅改版本号。从 main（afd6168）构建，两次重复构建结果一致，ZIP SHA-256 为 e833babaa1055e8cf651966f2c490e588189bd014b2f58693cd2180b1e790869（合并前同源码的本地构建 81e1776627124a528a90190e03629fe5f41a1aa17ea3a846bc2d15af44122431 已被覆盖，未安装、未交付） |
+| 0.1.0.8 | 10 | 2026-10-18 本地构建包，未安装。分配前核对：远程与本地均无标签和 Release，`dist` 最新为 0.1.0.7，测试机已安装 0.1.0.6。新增控制中心媒体卡片：`bin/glassmic-media.jar`（overlay/*.java）由 `app_process` 运行；WebUI「设置」中的开关保存到 `/data/adb/glassmic/media-card.conf`，开机后由 `service.sh` 启动的 `bin/media-card.sh` 监督卡片进程；使用专用低重要性通知渠道 `glassmic.media`，卸载时删除。构建新增 16 KiB LOAD 对齐检查。原生仅改版本号。两次构建结果一致，ZIP SHA-256 为 90bca02a131723053faa240a82cebe49d23bce6c28b9c42bbdf3673e469aa49e，与主测试机最后一次隔离自动测试所用文件相同（构建自提交前的工作区；用户手动检查拖动与应用名时的构建仅 media-card.sh 一处换行不同） |
 
-早期临时生成的 0.1.1 不作为发版基准。后续修复从 0.1.0.8 继续，另有明确指定的新正式基准时再调整。
+早期临时生成的 0.1.1 不作为发版基准。后续修复从 0.1.0.9 继续，另有明确指定的新正式基准时再调整。

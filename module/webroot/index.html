@@ -42,12 +42,14 @@
 <label for="gain"><span data-i18n="gain">输出增益</span> <output id="gain-value">0 dB</output></label><input type="range" id="gain" min="-24" max="12" step="1" value="0">
 <label for="speed"><span data-i18n="speed">播放速度</span> <output id="speed-value">1.00×</output></label><input type="range" id="speed" min="0.5" max="2" step="0.05" value="1"><p class="muted hint" data-i18n="speedHint">速度与音调联动；内置软限幅保护输出。</p>
 </div>
+<div class="section-heading"><div><h2 data-i18n="mediaCard">控制中心卡片</h2><p class="muted" data-i18n="mediaCardHint">在通知栏和控制中心的媒体卡片里控制播放</p></div></div>
+<div class="card form-card"><label class="switch-label"><input type="checkbox" id="media-card" disabled><span data-i18n="mediaCardToggle">显示控制中心卡片</span></label><p id="media-card-status" class="hint muted" role="status" data-i18n="mediaCardChecking">正在读取卡片状态…</p><p class="hint muted" data-i18n="mediaCardNote">卡片可播放、暂停、拖动进度、切换音频，以及切回真实麦克风或静音。开机后按此开关自动显示。</p></div>
 <div class="section-heading"><div><h2 data-i18n="targetApps">生效应用</h2><p class="muted" data-i18n="targetAppsHint">仅选中的应用使用虚拟麦克风</p></div><button id="save-targets" class="accent-button" data-i18n="save">保存</button></div>
 <div class="card form-card"><label for="app-search" data-i18n="findApp">查找应用</label><input type="search" id="app-search" placeholder="搜索应用包名" data-i18n-attr="placeholder:appSearchPlaceholder"><div id="apps" class="app-list"><p class="muted" data-i18n="loadingApps">正在读取应用列表…</p></div><details><summary data-i18n="editManually">手动编辑包名</summary><textarea id="target-packages" rows="4" placeholder="每行一个包名" data-i18n-attr="placeholder:packagesPlaceholder"></textarea></details><p class="hint muted" data-i18n="targetNote">首次选择的应用，需要在它下次启动时加载后端。移除应用会立即停止替换其录音。</p></div>
 <details class="card diagnostics"><summary data-i18n="diagnostics">运行诊断</summary><div id="diagnostics" class="muted" data-i18n="noData">暂无数据</div></details>
 </section>
 </main>
-<footer><span data-i18n="footer">璃麦 · KernelSU 音频模块</span> <span>v0.1.0.7</span></footer>
+<footer><span data-i18n="footer">璃麦 · KernelSU 音频模块</span> <span>v0.1.0.8</span></footer>
 </div>
 <dialog id="file-browser" aria-labelledby="browser-title">
 <div class="browser-heading"><h2 id="browser-title" data-i18n="browserTitle">从手机导入音频</h2><button id="browser-close" aria-label="关闭文件选择" data-i18n="close" data-i18n-attr="aria-label:closeBrowserAria">关闭</button></div>

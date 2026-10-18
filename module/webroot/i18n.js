@@ -28,6 +28,10 @@ const messages={
     enterText:'请先输入文字',ttsDone:'语音已生成并选中，点击播放即可使用',
     soundSettings:'声音设置',settingsStored:'设置保存在模块中',gain:'输出增益',speed:'播放速度',
     speedHint:'速度与音调联动；内置软限幅保护输出。',
+    mediaCard:'控制中心卡片',mediaCardHint:'在通知栏和控制中心的媒体卡片里控制播放',mediaCardToggle:'显示控制中心卡片',
+    mediaCardChecking:'正在读取卡片状态…',mediaCardOff:'已关闭',mediaCardOn:'卡片已显示',mediaCardStarting:'正在启动卡片…',
+    mediaCardReboot:'开关已保存，重启设备后生效',mediaCardNote:'卡片可播放、暂停、拖动进度、切换音频，以及切回真实麦克风或静音。开机后按此开关自动显示。',
+    mediaCardShown:'已打开控制中心卡片',mediaCardHidden:'已关闭控制中心卡片',errMediaCardSave:'无法保存卡片设置',
     targetApps:'生效应用',targetAppsHint:'仅选中的应用使用虚拟麦克风',save:'保存',findApp:'查找应用',
     appSearchPlaceholder:'搜索应用包名',loadingApps:'正在读取应用列表…',noMatchingApps:'没有匹配的应用，可以在下方手动填写包名。',
     editManually:'手动编辑包名',packagesPlaceholder:'每行一个包名',
@@ -85,6 +89,10 @@ const messages={
     enterText:'Enter some text first',ttsDone:'Speech generated and selected. Tap Play to use it.',
     soundSettings:'Sound settings',settingsStored:'Settings are stored in the module',gain:'Output gain',speed:'Playback speed',
     speedHint:'Speed also changes pitch. A built-in soft limiter protects the output.',
+    mediaCard:'Control center card',mediaCardHint:'Control playback from a media card in notifications and the control center',mediaCardToggle:'Show control center card',
+    mediaCardChecking:'Checking card status…',mediaCardOff:'Off',mediaCardOn:'Card is showing',mediaCardStarting:'Starting the card…',
+    mediaCardReboot:'Saved. Takes effect after a reboot.',mediaCardNote:'The card can play, pause, seek, switch audio, and go back to the real microphone or mute. It appears after boot while this is on.',
+    mediaCardShown:'Control center card turned on',mediaCardHidden:'Control center card turned off',errMediaCardSave:'Could not save the card setting',
     targetApps:'Target apps',targetAppsHint:'Only selected apps use the virtual microphone',save:'Save',findApp:'Find apps',
     appSearchPlaceholder:'Search package names',loadingApps:'Loading app list…',noMatchingApps:'No matching apps. You can enter package names below.',
     editManually:'Edit package names manually',packagesPlaceholder:'One package name per line',
@@ -127,7 +135,8 @@ const backendErrors={
   'unsupported audio; use WAV, MP3 or FLAC':'errUnsupported','select an audio file first':'errSelectFirst',
   'seek failed':'errSeek','resume seek failed':'errResume','invalid or protected package':'errProtected',
   'cannot save targets':'errTargets','cannot delete file':'errDelete','upload offset mismatch or write failed':'errUpload',
-  'upload missing':'errUploadMissing','commit failed':'errCommit'
+  'upload missing':'errUploadMissing','commit failed':'errCommit',
+  'cannot save media card setting':'errMediaCardSave'
 };
 const STORAGE_KEY='glassmic.language';
 function initialLanguage() {

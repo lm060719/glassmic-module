@@ -208,7 +208,7 @@ public:
     std::string status() {
         reapClients();
         std::ostringstream o;
-        o<<"{\"ok\":true,\"version\":\"0.1.0.7\",\"mode\":"<<audio->mode.load()
+        o<<"{\"ok\":true,\"version\":\"0.1.0.8\",\"mode\":"<<audio->mode.load()
          <<",\"paused\":"<<(paused?"true":"false")<<",\"loop\":"<<(loop?"true":"false")
          <<",\"gainDb\":"<<20*log10f(gain)<<",\"speed\":"<<speed
          <<",\"positionMs\":"<<sourcePosition/48<<",\"durationMs\":"<<duration/48

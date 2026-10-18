@@ -1,7 +1,7 @@
 async (page) => {
   await page.addInitScript(() => {
     window.__gmCommands=[];
-    const state={ok:true,version:'0.1.0.7',mode:0,paused:true,loop:false,gainDb:0,speed:1,positionMs:0,durationMs:45000,peak:0.34,selected:'',
+    const state={ok:true,version:'0.1.0.8',mode:0,paused:true,loop:false,gainDb:0,speed:1,positionMs:0,durationMs:45000,peak:0.34,selected:'',
       targets:['io.mo.glassmic.probe'],clients:[{package:'io.mo.glassmic.probe',pid:12345,hooks:15,reads:2048,frames:960000,missing:0,skipped:0}],
       files:[{name:'清晨的声音.wav',bytes:4320000},{name:"朋友的'问候.mp3",bytes:640000}]};
     window.__gmState=state;
@@ -31,7 +31,12 @@ async (page) => {
       if(command==='pm list packages -3')stdout='package:io.mo.glassmic.probe\npackage:com.example.recorder\npackage:com.example.chat\n';
       else {
         const args=words(command),cmd=args[1];
-        if(args[0].endsWith('tts.sh')) {
+        if(args[0].endsWith('media-card.sh')) {
+          window.__gmMediaCard||={enabled:false};
+          if(cmd==='on'||cmd==='off')window.__gmMediaCard.enabled=cmd==='on';
+          const card=window.__gmMediaCard;
+          stdout=JSON.stringify({ok:true,enabled:card.enabled,running:card.enabled,supervisor:true});
+        } else if(args[0].endsWith('tts.sh')) {
           state.files.push({name:'TTS-测试.wav',bytes:240000});
           stdout=JSON.stringify({ok:true,file:'TTS-测试.wav'});
         } else if(cmd==='browse') {

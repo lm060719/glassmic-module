@@ -35,5 +35,8 @@ PCM 和统计文件使用专用 `glassmic_shm` SELinux 类型。模块的 `sepol
 
 TTS 工具是小型 DEX JAR，由 `app_process` 运行，通过 Android 的 `texttospeech` 会话服务连接已安装引擎。该路径不需要应用注册、Activity 或控制 APK。先在 shell 临时目录生成 WAV，再由 root 移入模块音频库，避免把模块私有文件 FD 直接交给语音引擎。
 
+## 控制中心卡片
+`bin/glassmic-media.jar` 由 `app_process` 运行：注册 MediaSession，并以 `android` 包发出 MediaStyle 通知，不添加窗口。卡片操作在工作线程调用 `glassmicctl`，与 WebUI 共用同一守护进程，不接触音频数据。`bin/media-card.sh supervise` 由 `service.sh` 启动，按 WebUI 开关（`media-card.conf`，原子 rename 保存）启停并监督卡片进程，只向核实过身份的自有 PID 发信号。通知渠道属于 `android` 包的 UID 1000，创建和删除方式见 [悬浮控制方案](floating-controls.md)。
+
 ## 尚待验证
 隔离测试已验证原生数据面与当前 ROM 的系统 TTS。真实应用中的 Zygisk 注入、Java AudioRecord 元数据注册、AAudio MMAP 实际录音和 OpenSL 对象生命周期需要获准后进行设备交互测试。现有测试没有对游戏账号或反作弊结果做任何验证。

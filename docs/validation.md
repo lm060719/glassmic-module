@@ -1,4 +1,10 @@
 # 验证记录
+## 0.1.0.8 控制中心卡片 · 2026-10-18（Asia/Shanghai，未安装）
+- 构建：`scripts/build.ps1` 通过；新增的 16 KiB 检查确认 5 个 ELF（glassmicd、glassmicctl、Zygisk 加载器、后端、`libshadowhook_nothing.so`）的 LOAD 对齐均为 0x4000。两次构建 ZIP 一致。
+- WebUI：PC 浏览器模拟 KernelSU 桥接，开关在中文/英文下开启、关闭，调用 `media-card.sh status/on/off`，状态与提示文字正确。
+- 主测试机 25019PNF3C：经用户同意，用 `scripts/check_media_card.ps1` 在隔离目录测试，`-Action auto` 全部通过；用户在控制中心卡片上拖动进度条（4 次 seek 均成功），确认应用名显示为“璃麦”。正式 glassmicd PID 3357 不变，测试结束后无残留进程和临时文件。细节见 [悬浮控制方案](floating-controls.md)。
+- 未验证：正式安装后的开机自启、管理器内 WebUI 的实际操作、卸载后的开机删除路径。
+
 ## 0.1.0.6 安装与重启核对 · 2026-10-15（Asia/Shanghai）
 
 经用户许可，在 25019PNF3C 上用 `ksud module install` 安装 `dist/glassmic-0.1.0.6-arm64.zip`（退出码 0），然后重启一次。安装包在本地、记录和手机三处的 SHA-256 一致：7fd149ec…7da2。

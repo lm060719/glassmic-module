@@ -1,11 +1,5 @@
 # GlassMic · 璃麦
-KernelSU 模块内的虚拟麦克风：WebUI 控制、独立原生音频引擎、Zygisk 录音后端。无需控制 APK，也不依赖 LSPosed。
-
-最新构建为 0.1.0.9（未安装），「生效应用」列表改为显示应用名，已勾选的应用排在前面。0.1.0.8 新增控制中心媒体卡片：在 WebUI「设置」中打开后，可在通知栏和控制中心播放、暂停、拖动进度、切换音频、切回真实麦克风或静音，见 [悬浮控制方案](docs/floating-controls.md)。0.1.0.7 为 WebUI 增加了中英文切换。0.1.0.6 已安装到主测试机 25019PNF3C 并重启生效，微信的 hook 已装上（mask 15、stage 3）。主测试机（KernelSU）和 Mi 9T（Magisk）的 root 隔离测试均已全部通过；实际录音取音和长期稳定性仍待验证。该版本包含两项修复：
-- 模块自带 ShadowHook 的 `libshadowhook_nothing.so`。此前只有 ROM 恰好提供这个库时才能装上 hook，否则后端完全不生效。
-- 录音后端不再使用 `thread_local`，避免音频回调线程首次取音时在模拟 TLS 中分配内存和加锁。
-
-0.1.0.4 修复播放进度依赖录音读取、FLAC 在文件选择器变灰、大文件逐块导入缓慢，以及 SELinux 拒绝共享音频 FD 导致 Hook 0 的问题，并兼容 Android 17 的 AudioRecord 字段改名。已在小米 15 Ultra / Android 17 完成隔离原生、SELinux 应用身份、直接导入与解码验证；停止旧版同时作用于微信后，用户确认录音恢复，新版实际取音计数增长。版本规则和基准记录见 [发版记录](docs/releases.md)。
+KernelSU 模块内的虚拟麦克风：WebUI 控制、独立原生音频引擎、Zygisk 录音后端。
 
 ## 安装和使用
 需要 arm64-v8a、Android 10 以上、KernelSU，以及兼容系统的 Zygisk 实现。设备上已有 Zygisk Next 时无需重复安装。本模块不包含 Zygisk 运行时。
